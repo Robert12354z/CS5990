@@ -1,0 +1,159 @@
+
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Detecting Social Media Bots: Final Report}
+
+\author{\IEEEauthorblockN{Moaz Ali\textsuperscript{1}, Gabriel Alfredo Siguenza\textsuperscript{2}, Roberto Rafael Reyes\textsuperscript{3}, Stephanie Pocci\textsuperscript{4}, Prabhakara Kambhammettu\textsuperscript{5}}
+\IEEEauthorblockA{\textit{Department of Computer Science} \\
+\textit{California State Polytechnic University, Pomona}\\
+Pomona, USA \\}}
+
+\maketitle
+
+\begin{abstract}
+Social media platforms are often targeted by automated accounts, known as bots, which can skew public opinion, spread misinformation, and influence discourse through deceptive means. This project presents a machine learning pipeline for detecting bot accounts on VK.com, Russia's largest social network. Using a dataset of over 12,000 profiles and more than 60 features, we applied supervised learning models to classify accounts as either bot or human. We implemented and compared Naive Bayes, Decision Tree...
+\end{abstract}
+
+\begin{IEEEkeywords}
+Data Mining, Classification, Social Bots, Machine Learning, VK.com, Supervised Learning
+\end{IEEEkeywords}
+
+\section{Introduction}
+Automated accounts (bots) have become increasingly sophisticated, often mimicking human behavior to deceive users and manipulate information. While most research has focused on English-speaking platforms like Twitter and Facebook, this project focuses on VK.com, where bot presence remains understudied yet impactful.
+
+Detecting bots is a non-trivial problem because bots often use strategies to emulate legitimate behaviors, such as having profile pictures, posting regularly, or mimicking engagement patterns. This necessitates using intelligent, data-driven approaches.
+
+Our team’s goal was to use machine learning to build an effective bot classifier. We worked collaboratively to preprocess the data, engineer features, train and evaluate multiple models, and document results thoroughly. Each step in the pipeline was discussed and iteratively improved based on initial findings and feedback.
+
+\section{Dataset}
+The dataset used for this study is publicly available on Kaggle\cite{b1}. It contains labeled information for VK.com accounts, specifically labeled as bots or human users. The key characteristics include:
+
+\begin{itemize}
+    \item 12,000+ instances.
+    \item 60+ features, both numeric and categorical.
+    \item Label column (`target`), with 0 representing humans and 1 for bots.
+\end{itemize}
+
+\subsection{Features Overview}
+Some notable feature groups:
+\begin{itemize}
+    \item \textbf{Account Attributes:} has\_domain, has\_photo, gender, is\_verified.
+    \item \textbf{Activity Metrics:} posts\_count, reposts\_ratio, likes\_average.
+    \item \textbf{Content Info:} text length, number of hashtags, uniqueness of text.
+    \item \textbf{Engagement Patterns:} comments, views, post frequency.
+\end{itemize}
+
+\subsection{Target Class}
+The `target` feature is the binary class label used for classification. It was evenly distributed between classes, simplifying model evaluation and mitigating bias.
+
+\section{Methodology}
+\subsection{Preprocessing}
+We addressed several data quality issues:
+\begin{itemize}
+    \item \textbf{Missing Values:} All "Unknown" values and blanks were converted to NaN.
+    \item \textbf{Imputation:} For numeric columns, median was used; for categorical, mode was applied.
+    \item \textbf{Normalization:} Applied Min-Max Scaling to all numeric columns to bring them into a 0-1 range.
+    \item \textbf{Encoding:} Used one-hot encoding on categorical features to convert them into machine-readable format.
+\end{itemize}
+
+This process ensured that the dataset was well-prepared for training, avoided biases from improper scaling, and handled mixed data types properly.
+
+\subsection{Train/Test Split}
+To ensure fairness, we split the dataset using stratified sampling:
+\begin{itemize}
+    \item 80\% of the data used for training.
+    \item 20\% used for testing.
+    \item The `stratify` parameter ensured class balance in both sets.
+\end{itemize}
+
+\subsection{Model Training}
+We implemented the following classifiers:
+\begin{enumerate}
+    \item \textbf{Naive Bayes:} A probabilistic model good for baseline comparisons.
+    \item \textbf{Decision Tree:} Captures simple rule-based patterns.
+    \item \textbf{Logistic Regression:} Effective linear model often used in binary classification.
+    \item \textbf{Random Forest:} Ensemble model combining multiple decision trees, providing high accuracy and robustness.
+\end{enumerate}
+
+Each model was trained on the cleaned data, then serialized using \texttt{joblib} for testing and reuse.
+
+\subsection{Evaluation}
+We tested each model on the hold-out test set using:
+\begin{itemize}
+    \item Accuracy
+    \item Precision
+    \item Recall
+    \item F1 Score
+    \item Confusion Matrix
+\end{itemize}
+
+\section{Results}
+\subsection{Evaluation Metrics}
+The models performed as follows on the test set:
+
+\begin{itemize}
+    \item \textbf{Naive Bayes:} Moderate accuracy and recall, quick to train.
+    \item \textbf{Decision Tree:} More interpretable but prone to overfitting.
+    \item \textbf{Logistic Regression:} Strong generalization with consistent metrics.
+    \item \textbf{Random Forest:} Best performance across all metrics.
+\end{itemize}
+
+\textbf{Best Model (Random Forest)}:
+\begin{itemize}
+    \item Accuracy: 96.5\%
+    \item Precision: 97.6\%
+    \item Recall: 95.4\%
+    \item F1 Score: 96.4\%
+\end{itemize}
+
+\subsection{Confusion Matrix}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & Predicted Bot & Predicted Human \\
+\hline
+Actual Bot & 560 & 27 \\
+\hline
+Actual Human & 14 & 574 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Discussion}
+The Random Forest classifier outperformed others likely due to its ability to capture complex interactions among features. While Logistic Regression performed well, it lacked the flexibility to capture non-linear patterns. Naive Bayes performed poorly on correlated features.
+
+\section{Related Work}
+Bot detection has been widely studied on platforms like Twitter, where tools like Botometer have been developed. Most rely on content-based and network-based features. In contrast, our project demonstrates that using only profile-level features is not only computationally simpler but also highly effective.
+
+Other research has used deep learning, but we found that classical machine learning approaches can achieve comparable performance with less computational cost and better interpretability.
+
+\section{Conclusion}
+We successfully built a machine learning pipeline to detect social media bots with high accuracy. This was achieved using simple features, thorough data preparation, and ensemble classification techniques. Our code was modular and allowed each team member to contribute independently.
+
+This project highlights the importance of good data preprocessing and model evaluation in achieving strong performance, even without complex algorithms. For future work, we plan to explore:
+\begin{itemize}
+    \item Feature selection and dimensionality reduction.
+    \item Integration of text-based and social graph data.
+    \item Real-time detection systems for live VK data.
+\end{itemize}
+
+\section{References}
+\begin{thebibliography}{00}
+\bibitem{b1} Users vs Bots Classification Dataset, Kaggle. https://www.kaggle.com/datasets/juice0lover/users-vs-bots-classification
+\bibitem{b2} Tan, Pang-Ning, et al. Introduction to Data Mining. Pearson, 2018.
+\bibitem{b3} Scikit-learn: Machine Learning in Python. https://scikit-learn.org
+\bibitem{b4} Davis, C.A., Varol, O., Ferrara, E., Flammini, A., Menczer, F. (2016). BotOrNot: A system to evaluate social bots. WWW '16 Companion.
+\end{thebibliography}
+
+\end{document}

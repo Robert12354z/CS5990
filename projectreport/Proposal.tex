@@ -1,0 +1,86 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Detecting Social Media Bots}
+
+\author{\IEEEauthorblockN{Moaz Ali\textsuperscript{1}, Gabriel Alfredo Siguenza\textsuperscript{2}, Roberto Rafael Reyes\textsuperscript{3}, Stephanie Pocci\textsuperscript{4}, Prabhakara Kambhammettu\textsuperscript{5}}
+\IEEEauthorblockA{\textit{Department of Computer Science} \\
+\textit{California State Polytechnic University, Pomona}\\
+Pomona, USA \\}}
+
+\maketitle
+
+\begin{abstract}
+Bots on social networks like VK.com can distort engagement metrics, spread disinformation, and disrupt genuine user interaction. This project aims to classify user profiles on VK.com as either bots or genuine users using machine learning techniques. We utilize a publicly available dataset of VK.com profiles, containing both numerical and categorical metadata. The project applies data mining models and evaluates their performance in distinguishing bots from human accounts.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Data Mining, Classification, Social Bots, Machine Learning, VK.com
+\end{IEEEkeywords}
+
+\section{Introduction}
+The detection of automated accounts (bots) in social media platforms is essential to preserving the integrity of online interactions. VK.com, Russia’s largest social network, is affected by the growing use of bots that mimic human behavior to gain trust, promote content, or gather information. This project focuses on identifying such bot accounts on VK.com using supervised machine learning techniques applied to user profile metadata.
+
+We will use a labeled dataset from Kaggle, which includes 12,000+ VK.com user accounts and 60 features including both behavioral and structural metadata. Our goal is to preprocess the data, apply several classification models, and evaluate their ability to distinguish between bots and human users.
+
+\section{Dataset Details}
+The dataset is obtained from Kaggle: \textit{https://www.kaggle.com/datasets/juice0lover/users-vs-bots-classification}. It consists of over 12,000 labeled instances of VK.com accounts, classified as either 'bot' or 'user'.
+
+Features include numerical and categorical data such as:
+\begin{itemize}
+    \item Posts count
+    \item Friends/subscribers count
+    \item Profile privacy settings
+    \item Whether the user has photos, bios, or mobile numbers
+    \item Posting frequency and engagement metrics
+    \item Account verification and confirmation flags
+\end{itemize}
+The class distribution is approximately balanced, making it suitable for binary classification. We will perform data cleaning, normalization, and encoding as needed.
+
+\section{Methodology}
+We plan to follow this methodology:
+
+\subsection{Data Preprocessing}
+\begin{itemize}
+    \item Handle missing values
+    \item Normalize numerical features
+    \item Encode categorical features
+    \item Possibly engineer new features (e.g., activity ratio)
+\end{itemize}
+
+\subsection{Train/Test Split}
+We will use an 80/20 split with stratified sampling to preserve class balance.
+
+\subsection{Models to Use}
+\begin{itemize}
+    \item Decision Tree
+    \item Random Forest
+    \item Naive Bayes
+    \item Logistic Regression
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+\begin{itemize}
+    \item Accuracy
+    \item Precision, Recall, F1-score
+    \item Confusion Matrix
+    \item ROC-AUC (if applicable)
+\end{itemize}
+
+\begin{thebibliography}{00}
+\bibitem{b1} Users vs Bots Classification Dataset, Kaggle. https://www.kaggle.com/datasets/juice0lover/users-vs-bots-classification
+\bibitem{b2} Tan, Pang-Ning, et al. Introduction to Data Mining. Pearson, 2018.
+\bibitem{b3} Scikit-learn: Machine Learning in Python. https://scikit-learn.org
+\end{thebibliography}
+
+\end{document}
